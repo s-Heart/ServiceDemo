@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ServiceDemo" />
+
+    <Button
+        android:id="@+id/btn_start_local_service"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="start local service" />
+
+    <Button
+        android:id="@+id/btn_bind_local_service"
+        android:layout_width="wrap_content"
+        android:layout_height="52dp"
+        android:text="Bind Local service" />
+
+    <Button
+        android:id="@+id/btn_stop_local_service"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="stop_local_service" />
+
+    <Button
+        android:id="@+id/btn_start_bind_service"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="start_bind_service" />
+
+    <Button
+        android:id="@+id/btn_bind_start_service"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="bind_start_service" />
+
+</LinearLayout>
