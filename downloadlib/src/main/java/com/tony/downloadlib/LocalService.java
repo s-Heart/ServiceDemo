@@ -1,13 +1,24 @@
-package demo.com.servicedemo;
+package com.tony.downloadlib;
 
 import android.app.Service;
 import android.content.Intent;
-import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
 
+import com.tony.downloadlib.binder.ServiceBinder;
+
 public class LocalService extends Service {
-    private Binder binder = new ServiceBinder();
+    //region binder
+    private ServiceBinder binder = new ServiceBinder();
+
+
+    @Override
+    public IBinder onBind(Intent intent) {
+        Log.d("=====", "onBind: ");
+        return binder;
+    }
+    //endregion
+
 
     public LocalService() {
     }
@@ -25,20 +36,11 @@ public class LocalService extends Service {
     }
 
     @Override
-    public IBinder onBind(Intent intent) {
-        Log.d("=====", "onBind: ");
-        return binder;
-    }
-
-    @Override
     public void onDestroy() {
         Log.d("=====", "onDestroy: ");
-        super.onDestroy();
-    }
-
-    private class ServiceBinder extends Binder {
-        LocalService getService() {
-            return LocalService.this;
+        if (binder != null) {
+            binder.pauseAll();
         }
+        super.onDestroy();
     }
 }
