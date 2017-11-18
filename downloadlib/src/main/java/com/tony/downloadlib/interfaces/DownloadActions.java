@@ -1,6 +1,8 @@
-package com.tony.downloadlib;
+package com.tony.downloadlib.interfaces;
 
 import com.tony.downloadlib.model.DownloadModel;
+
+import java.util.List;
 
 /**
  * Created by tony on 2017/11/18.
@@ -13,5 +15,5 @@ public interface DownloadActions {
 
     void pauseAll();
 
-    void startAll();
+    void startAll(List<DownloadModel> models);
 }

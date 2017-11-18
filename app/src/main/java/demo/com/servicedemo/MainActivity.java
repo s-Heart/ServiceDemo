@@ -8,9 +8,11 @@ import android.widget.Toast;
 import com.tony.downloadlib.TDownloadManager;
 import com.tony.downloadlib.model.DownloadModel;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private int count;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,19 +22,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.btn_stop_download).setOnClickListener(this);
         findViewById(R.id.btn_start_all).setOnClickListener(this);
         findViewById(R.id.btn_pause_all).setOnClickListener(this);
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (true) {
-                    try {
-                        Thread.sleep(1000);
-                        count++;
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }).start();
     }
 
     @Override
@@ -44,10 +33,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.btn_stop_download:
                 Toast.makeText(getApplicationContext(), "停止下载", Toast.LENGTH_SHORT).show();
-                TDownloadManager.getInstance().pauseAll();
+                TDownloadManager.getInstance().pauseDownload(new DownloadModel());
                 break;
             case R.id.btn_start_all:
                 Toast.makeText(getApplicationContext(), "开始全部", Toast.LENGTH_SHORT).show();
+                List<DownloadModel> models = new ArrayList<>();
+                models.add(new DownloadModel());
+                models.add(new DownloadModel());
+                models.add(new DownloadModel());
+                models.add(new DownloadModel());
+                models.add(new DownloadModel());
+                TDownloadManager.getInstance().startAll(models);
                 break;
             case R.id.btn_pause_all:
                 Toast.makeText(getApplicationContext(), "停止全部", Toast.LENGTH_SHORT).show();

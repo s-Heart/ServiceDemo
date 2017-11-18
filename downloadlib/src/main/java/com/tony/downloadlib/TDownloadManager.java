@@ -8,8 +8,10 @@ import android.content.ServiceConnection;
 import android.os.IBinder;
 import android.util.Log;
 
-import com.tony.downloadlib.binder.ServiceBinder;
+import com.tony.downloadlib.downloadproxy.ServiceBinder;
 import com.tony.downloadlib.model.DownloadModel;
+
+import java.util.List;
 
 /**
  * Created by tony on 2017/11/18.
@@ -39,12 +41,12 @@ public class TDownloadManager implements ServiceConnection {
         if (this.context == null) {
             this.context = context;
             Log.d("==TDownloadManager", "init: ");
-//            context.startService(new Intent(context, TDownloadService.class));
+            context.startService(new Intent(context, TDownloadService.class));
             context.bindService(new Intent(context, TDownloadService.class), this, Context.BIND_AUTO_CREATE);
         }
     }
 
-    //region get download proxy
+    //region download proxy
 
     @Override
     public void onServiceConnected(ComponentName name, IBinder service) {
@@ -72,6 +74,20 @@ public class TDownloadManager implements ServiceConnection {
             return;
         }
         downloadProxy.pauseAll();
+    }
+
+    public void pauseDownload(DownloadModel downloadModel) {
+        if (this.downloadProxy == null) {
+            return;
+        }
+        downloadProxy.pauseDownload(downloadModel);
+    }
+
+    public void startAll(List<DownloadModel> models) {
+        if (this.downloadProxy == null) {
+            return;
+        }
+        downloadProxy.startAll(models);
     }
 
     //endregion

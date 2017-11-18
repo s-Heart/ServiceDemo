@@ -1,14 +1,15 @@
-package com.tony.downloadlib.binder;
+package com.tony.downloadlib.downloadproxy;
 
 import android.os.Binder;
 import android.util.Log;
 
-import com.tony.downloadlib.DownloadActions;
+import com.tony.downloadlib.interfaces.DownloadActions;
 import com.tony.downloadlib.model.DownloadModel;
 import com.tony.downloadlib.task.DownloadTask;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -40,7 +41,13 @@ public class ServiceBinder extends Binder implements DownloadActions {
 
     @Override
     public void pauseDownload(DownloadModel model) {
-
+        Log.d("==TServiceBinder", "pauseDownload: ");
+        Iterator iterator = downloadQueue.entrySet().iterator();
+        if (iterator.hasNext()) {
+            Map.Entry<DownloadModel, DownloadTask> entry = (Map.Entry<DownloadModel, DownloadTask>) iterator.next();
+            entry.getValue().cancel(true);
+            iterator.remove();
+        }
     }
 
     @Override
@@ -55,8 +62,15 @@ public class ServiceBinder extends Binder implements DownloadActions {
     }
 
     @Override
-    public void startAll() {
-
+    public void startAll(List<DownloadModel> models) {
+        Iterator iterator = models.iterator();
+        while (iterator.hasNext()) {
+            DownloadModel model = (DownloadModel) iterator.next();
+            if (downloadQueue.containsKey(model)) {
+                continue;
+            }
+            startDownload(model);
+        }
     }
 
     //endregion

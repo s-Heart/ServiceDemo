@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
 
-import com.tony.downloadlib.binder.ServiceBinder;
+import com.tony.downloadlib.downloadproxy.ServiceBinder;
 
 public class TDownloadService extends Service {
 
