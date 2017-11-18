@@ -2,6 +2,6 @@
     package="com.tony.downloadlib">
 
     <application>
-        <service android:name="com.tony.downloadlib.LocalService" />
+        <service android:name="com.tony.downloadlib.TDownloadService" />
     </application>
 </manifest>

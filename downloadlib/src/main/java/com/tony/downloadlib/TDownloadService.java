@@ -7,37 +7,40 @@ import android.util.Log;
 
 import com.tony.downloadlib.binder.ServiceBinder;
 
-public class LocalService extends Service {
+public class TDownloadService extends Service {
+
     //region binder
+
     private ServiceBinder binder = new ServiceBinder();
 
 
     @Override
     public IBinder onBind(Intent intent) {
-        Log.d("=====", "onBind: ");
+        Log.d("==TDownloadService", "onBind: ");
         return binder;
     }
+
     //endregion
 
 
-    public LocalService() {
+    public TDownloadService() {
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
-        Log.d("=====", "onCreate: ");
+        Log.d("==TDownloadService", "onCreate: ");
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.d("=====", "onStartCommand: ");
+        Log.d("==TDownloadService", "onStartCommand: ");
         return super.onStartCommand(intent, flags, startId);
     }
 
     @Override
     public void onDestroy() {
-        Log.d("=====", "onDestroy: ");
+        Log.d("==TDownloadService", "onDestroy: ");
         if (binder != null) {
             binder.pauseAll();
         }

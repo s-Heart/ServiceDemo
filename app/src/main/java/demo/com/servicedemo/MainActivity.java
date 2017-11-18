@@ -1,64 +1,59 @@
 package demo.com.servicedemo;
 
-import android.content.ComponentName;
-import android.content.Intent;
-import android.content.ServiceConnection;
-import android.os.IBinder;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Toast;
 
-import com.tony.downloadlib.LocalService;
+import com.tony.downloadlib.TDownloadManager;
+import com.tony.downloadlib.model.DownloadModel;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, ServiceConnection {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+
+    private int count;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        findViewById(R.id.btn_start_local_service).setOnClickListener(this);
-        findViewById(R.id.btn_bind_local_service).setOnClickListener(this);
-        findViewById(R.id.btn_stop_local_service).setOnClickListener(this);
-
-        findViewById(R.id.btn_start_bind_service).setOnClickListener(this);
-        findViewById(R.id.btn_bind_start_service).setOnClickListener(this);
+        findViewById(R.id.btn_start_download).setOnClickListener(this);
+        findViewById(R.id.btn_stop_download).setOnClickListener(this);
+        findViewById(R.id.btn_start_all).setOnClickListener(this);
+        findViewById(R.id.btn_pause_all).setOnClickListener(this);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true) {
+                    try {
+                        Thread.sleep(1000);
+                        count++;
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }).start();
     }
 
     @Override
     public void onClick(View view) {
-        Intent intent;
         switch (view.getId()) {
-            case R.id.btn_start_local_service:
-                intent = new Intent(getApplicationContext(), LocalService.class);
-                startService(intent);
+            case R.id.btn_start_download:
+                Toast.makeText(getApplicationContext(), "开始下载", Toast.LENGTH_SHORT).show();
+                TDownloadManager.getInstance().startDownload(new DownloadModel());
                 break;
-            case R.id.btn_bind_local_service:
-                bindService(new Intent(getApplicationContext(), LocalService.class), MainActivity.this, BIND_AUTO_CREATE);
+            case R.id.btn_stop_download:
+                Toast.makeText(getApplicationContext(), "停止下载", Toast.LENGTH_SHORT).show();
+                TDownloadManager.getInstance().pauseAll();
                 break;
-            case R.id.btn_stop_local_service:
-                stopService(new Intent(getApplicationContext(), LocalService.class));
+            case R.id.btn_start_all:
+                Toast.makeText(getApplicationContext(), "开始全部", Toast.LENGTH_SHORT).show();
                 break;
-            case R.id.btn_start_bind_service:
-                intent = new Intent(getApplicationContext(), LocalService.class);
-                startService(intent);
-                bindService(intent, MainActivity.this, BIND_AUTO_CREATE);
-                break;
-            case R.id.btn_bind_start_service:
-                intent = new Intent(getApplicationContext(), LocalService.class);
-                bindService(intent, MainActivity.this, BIND_AUTO_CREATE);
-                startService(intent);
+            case R.id.btn_pause_all:
+                Toast.makeText(getApplicationContext(), "停止全部", Toast.LENGTH_SHORT).show();
+                TDownloadManager.getInstance().pauseAll();
                 break;
         }
     }
 
-    @Override
-    public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
-        Log.d("=====", "onServiceConnected: " + iBinder);
-    }
-
-    @Override
-    public void onServiceDisconnected(ComponentName componentName) {
-        Log.d("=====", "onServiceDisconnected: " + componentName);
-    }
 }
