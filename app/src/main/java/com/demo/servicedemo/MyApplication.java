@@ -1,4 +1,4 @@
-package demo.com.servicedemo;
+package com.demo.servicedemo;
 
 import android.app.Application;
 

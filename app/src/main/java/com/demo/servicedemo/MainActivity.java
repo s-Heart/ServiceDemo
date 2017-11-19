@@ -1,4 +1,4 @@
-package demo.com.servicedemo;
+package com.demo.servicedemo;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -11,6 +11,7 @@ import com.tony.downloadlib.model.DownloadModel;
 
 import java.util.ArrayList;
 import java.util.List;
+
 
 public class MainActivity extends Activity implements View.OnClickListener {
     String file1 = "http://appstore.koolearn.com/files/apps/Koolearn_v3.1.5.apk";

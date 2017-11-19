@@ -1,13 +1,13 @@
-package demo.com.servicedemo;
+package com.demo.servicedemo;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.tony.downloadlib.TDownloadManager;
 import com.tony.downloadlib.interfaces.DownloadCallbacks;
 import com.tony.downloadlib.model.DownloadModel;
+
 
 /**
  * Author: tony(110618445@qq.com)
