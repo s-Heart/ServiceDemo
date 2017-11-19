@@ -79,9 +79,9 @@
         android:text="暂停全部下载" />
 
     <Button
-        android:id="@+id/btn_check"
+        android:id="@+id/btn_jump_activity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="checkDB" />
+        android:text="jump Second Act" />
 
 </LinearLayout>

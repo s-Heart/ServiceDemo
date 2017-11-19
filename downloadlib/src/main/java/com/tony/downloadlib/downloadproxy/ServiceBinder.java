@@ -3,8 +3,10 @@ package com.tony.downloadlib.downloadproxy;
 import android.os.Binder;
 import android.util.Log;
 
-import com.tony.downloadlib.TDBManager;
+import com.tony.downloadlib.db.TDBManager;
+import com.tony.downloadlib.greendao.DaoSession;
 import com.tony.downloadlib.interfaces.DownloadActions;
+import com.tony.downloadlib.interfaces.DownloadCallbacks;
 import com.tony.downloadlib.model.DownloadModel;
 import com.tony.downloadlib.task.DownloadTask;
 
@@ -12,6 +14,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Vector;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -20,13 +23,15 @@ import java.util.concurrent.Executors;
  */
 
 public class ServiceBinder extends Binder implements DownloadActions {
+    private final DaoSession daoProxy;
     private ExecutorService pool;
     private Map<String, DownloadTask> downloadQueue = new HashMap<>();
+    private Vector uiListeners = new Vector();
 
 
     public ServiceBinder() {
-        Log.d("==TServiceBinder", "ServiceBinder: ");
         this.pool = Executors.newFixedThreadPool(3);
+        this.daoProxy = TDBManager.getInstance().getDaoSession();
     }
 
     //region DownloadActions
@@ -36,12 +41,10 @@ public class ServiceBinder extends Binder implements DownloadActions {
         if (downloadQueue.containsKey(model.getUrl())) {
             return;
         }
-        DownloadTask task = new DownloadTask(model);
+        DownloadTask task = new DownloadTask(model,uiListeners);
         downloadQueue.put(model.getUrl(), task);
         task.executeOnExecutor(pool);
-
-        TDBManager.getInstance().getDaoSession().getDownloadModelDao().insertOrReplace(model);
-
+        daoProxy.getDownloadModelDao().insertOrReplace(model);
     }
 
     @Override
@@ -78,6 +81,20 @@ public class ServiceBinder extends Binder implements DownloadActions {
                 continue;
             }
             startDownload(model);
+        }
+    }
+
+    //endregion
+
+    //region DownloadCallbacks
+
+    public void registerCallbackListener(DownloadCallbacks uiCallback) {
+        uiListeners.add(uiCallback);
+    }
+
+    public void unRegisterCallbackListener(DownloadCallbacks uiCallback) {
+        if (uiListeners.contains(uiCallback)) {
+            uiListeners.remove(uiCallback);
         }
     }
 

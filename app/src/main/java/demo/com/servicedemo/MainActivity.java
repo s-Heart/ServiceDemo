@@ -1,6 +1,7 @@
 package demo.com.servicedemo;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -29,7 +30,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         findViewById(R.id.btn_start_all).setOnClickListener(this);
         findViewById(R.id.btn_pause_all).setOnClickListener(this);
 
-        findViewById(R.id.btn_check).setOnClickListener(this);
+        findViewById(R.id.btn_jump_activity).setOnClickListener(this);
     }
 
     @Override
@@ -90,6 +91,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
             case R.id.btn_pause_all:
                 Toast.makeText(getApplicationContext(), "停止全部", Toast.LENGTH_SHORT).show();
                 TDownloadManager.getInstance().pauseAll();
+                break;
+
+            case R.id.btn_jump_activity:
+                startActivity(new Intent(this,SecondActivity.class));
                 break;
         }
     }

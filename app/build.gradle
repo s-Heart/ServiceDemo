@@ -9,7 +9,7 @@ android {
         versionCode 1
         versionName "1.0"
 
-        ndk{
+        ndk {
             abiFilters 'armeabi'
         }
     }
@@ -27,4 +27,5 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support:appcompat-v7:22.0.0'
     implementation project(":downloadlib")
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
 }

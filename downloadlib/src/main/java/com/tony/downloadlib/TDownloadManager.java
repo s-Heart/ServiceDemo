@@ -8,7 +8,9 @@ import android.content.ServiceConnection;
 import android.os.IBinder;
 import android.util.Log;
 
+import com.tony.downloadlib.db.TDBManager;
 import com.tony.downloadlib.downloadproxy.ServiceBinder;
+import com.tony.downloadlib.interfaces.DownloadCallbacks;
 import com.tony.downloadlib.model.DownloadModel;
 
 import java.util.List;
@@ -97,6 +99,24 @@ public class TDownloadManager implements ServiceConnection {
             return;
         }
         downloadProxy.startAll(models);
+    }
+
+    //endregion
+
+    //region uiCallbacks
+
+    public void registerCallbackListener(DownloadCallbacks uiCallback) {
+        if (this.downloadProxy == null) {
+            return;
+        }
+        downloadProxy.registerCallbackListener(uiCallback);
+    }
+
+    public void unRegisterCallbackListener(DownloadCallbacks uiCallback) {
+        if (this.downloadProxy == null) {
+            return;
+        }
+        downloadProxy.unRegisterCallbackListener(uiCallback);
     }
 
     //endregion

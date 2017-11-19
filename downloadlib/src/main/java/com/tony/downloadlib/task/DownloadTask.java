@@ -1,9 +1,14 @@
 package com.tony.downloadlib.task;
 
 import android.os.AsyncTask;
+import android.os.Looper;
 import android.util.Log;
 
+import com.tony.downloadlib.interfaces.DownloadCallbacks;
 import com.tony.downloadlib.model.DownloadModel;
+
+import java.util.Iterator;
+import java.util.Vector;
 
 /**
  * Created by tony on 2017/11/19.
@@ -11,9 +16,11 @@ import com.tony.downloadlib.model.DownloadModel;
 
 public class DownloadTask extends AsyncTask {
     private final DownloadModel model;
+    private final Vector<DownloadCallbacks> uiListeners;
 
-    public DownloadTask(DownloadModel model) {
+    public DownloadTask(DownloadModel model, Vector<DownloadCallbacks> uiListeners) {
         this.model = model;
+        this.uiListeners = uiListeners;
     }
 
     @Override
@@ -26,6 +33,14 @@ public class DownloadTask extends AsyncTask {
                 e.printStackTrace();
             }
             Log.d("==TDownloadTask", "run: " + Thread.currentThread().getName() + "====" + count++);
+            if (uiListeners != null) {
+                Iterator it = uiListeners.iterator();
+                while (it.hasNext()) {
+                    DownloadCallbacks listener = (DownloadCallbacks) it.next();
+                    // FIXME: 2017/11/19 线程切换有问题
+                    listener.callback(model);
+                }
+            }
         }
         return null;
     }
