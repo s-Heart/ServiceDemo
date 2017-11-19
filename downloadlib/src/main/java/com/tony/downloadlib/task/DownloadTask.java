@@ -32,7 +32,7 @@ public class DownloadTask extends AsyncTask {
 
     @Override
     protected void onCancelled() {
-        Log.d("==TDownloadTask", "onCancelled: " + this);
+        Log.d("==TDownloadTask", "onCancelled: " + model.getUrl());
         super.onCancelled();
     }
 }

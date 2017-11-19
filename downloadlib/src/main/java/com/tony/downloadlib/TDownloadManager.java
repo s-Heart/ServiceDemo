@@ -41,9 +41,18 @@ public class TDownloadManager implements ServiceConnection {
         if (this.context == null) {
             this.context = context;
             Log.d("==TDownloadManager", "init: ");
-            context.startService(new Intent(context, TDownloadService.class));
-            context.bindService(new Intent(context, TDownloadService.class), this, Context.BIND_AUTO_CREATE);
+            initBinder(context);
+            initDB(context);
         }
+    }
+
+    private void initDB(Context context) {
+        TDBManager.getInstance().init(context);
+    }
+
+    private void initBinder(Context context) {
+        context.startService(new Intent(context, TDownloadService.class));
+        context.bindService(new Intent(context, TDownloadService.class), this, Context.BIND_AUTO_CREATE);
     }
 
     //region download proxy

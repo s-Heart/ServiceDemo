@@ -15,7 +15,8 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="请输入需要下载的文件链接"
-        android:inputType="textPersonName" />
+        android:inputType="textPersonName"
+        android:text="http://appstore.koolearn.com/files/apps/Koolearn_v3.1.5.apk" />
 
     <ProgressBar
         android:id="@+id/progressbar_1"
@@ -29,7 +30,8 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="请输入需要下载的文件链接"
-        android:inputType="textPersonName" />
+        android:inputType="textPersonName"
+        android:text="http://appstore.koolearn.com/files/apps/Koolearn_v2.4.10.exe" />
 
     <ProgressBar
         android:id="@+id/progressbar_2"
@@ -43,7 +45,8 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="请输入需要下载的文件链接"
-        android:inputType="textPersonName" />
+        android:inputType="textPersonName"
+        android:text="http://appstore.koolearn.com/files/apps/Koolearn_v0.8.9.dmg" />
 
     <ProgressBar
         android:id="@+id/progressbar_3"
@@ -74,5 +77,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="暂停全部下载" />
+
+    <Button
+        android:id="@+id/btn_check"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="checkDB" />
 
 </LinearLayout>
