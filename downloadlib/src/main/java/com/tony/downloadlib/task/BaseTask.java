@@ -9,6 +9,11 @@ import android.util.Log;
 import com.tony.downloadlib.interfaces.DownloadCallbacks;
 import com.tony.downloadlib.model.DownloadModel;
 
+import org.greenrobot.greendao.annotation.NotNull;
+
+import java.util.Iterator;
+import java.util.Vector;
+
 /**
  * Author: shishaojie
  * Date: 2017/11/20 0020 10:17
@@ -19,16 +24,16 @@ public abstract class BaseTask implements Runnable {
 
     private Handler innerHandler = new InnerHandler(Looper.getMainLooper());
 
-    void notifyUIFromWorkThread(int callbackType, DownloadCallbacks listener, DownloadModel model, Exception e, String... args) {
+    void notifyUIFromWorkThread(int callbackType, Vector listeners, @NotNull DownloadModel model, Exception e, String args) {
         // 线程切换
-        Log.d("=T=BaseTask", "notifyUIFromWorkThread: " + Thread.currentThread().getName());
+//        Log.d("=T=BaseTask", "notifyUIFromWorkThread: " + Thread.currentThread().getName());
         Message msg = innerHandler.obtainMessage();
         msg.what = callbackType;
         Bundle bundle = new Bundle();
-        bundle.putSerializable("listener", listener);
+        bundle.putSerializable("listeners", listeners);
         bundle.putSerializable("model", model);
         bundle.putSerializable("exception", e);
-        bundle.putStringArray("args", args);
+        bundle.putString("args", args);
         msg.setData(bundle);
         msg.sendToTarget();
     }
@@ -40,20 +45,50 @@ public abstract class BaseTask implements Runnable {
 
         @Override
         public void handleMessage(Message msg) {
-            Log.d("=T=InnerHandler", "handleMessage: " + Thread.currentThread().getName());
+//            Log.d("=T=InnerHandler", "handleMessage: " + Thread.currentThread().getName());
             int methodCode = msg.what;
             Bundle data = msg.getData();
-            DownloadCallbacks listener = (DownloadCallbacks) data.getSerializable("listener");
+            Vector listeners = (Vector) data.getSerializable("listeners");
             DownloadModel model = (DownloadModel) data.getSerializable("model");
             Exception e = (Exception) data.getSerializable("exception");
-            String[] args = data.getStringArray("args");
+            String args = data.getString("args");
+            Iterator iterator = listeners.iterator();
             switch (methodCode) {
-                case DownloadCallbacks.CallbackType.METHOD_CALLBACK:
-                    listener.callback(model, args);
+                case DownloadCallbacks.METHOD_ON_COMPLETE:
+                    while (iterator.hasNext()) {
+                        DownloadCallbacks listener = (DownloadCallbacks) iterator.next();
+                        listener.onComplete(model, args);
+                    }
                     break;
-                case DownloadCallbacks.CallbackType.METHOD_CALLBACK2:
-                    listener.callback2(model, e);
+                case DownloadCallbacks.METHOD_ON_FAILED:
+                    iterator = listeners.iterator();
+                    while (iterator.hasNext()) {
+                        DownloadCallbacks listener = (DownloadCallbacks) iterator.next();
+                        listener.onFailed(model, e);
+                    }
                     break;
+                case DownloadCallbacks.METHOD_ON_CANCELED:
+                    iterator = listeners.iterator();
+                    while (iterator.hasNext()) {
+                        DownloadCallbacks listener = (DownloadCallbacks) iterator.next();
+                        listener.onCanceled();
+                    }
+                    break;
+                case DownloadCallbacks.METHOD_ON_WAIT:
+                    iterator = listeners.iterator();
+                    while (iterator.hasNext()) {
+                        DownloadCallbacks listener = (DownloadCallbacks) iterator.next();
+                        listener.onWait(model);
+                    }
+                    break;
+                case DownloadCallbacks.METHOD_ON_PROGRESS:
+                    iterator = listeners.iterator();
+                    while (iterator.hasNext()) {
+                        DownloadCallbacks listener = (DownloadCallbacks) iterator.next();
+                        listener.onProgress(model, args);
+                    }
+                    break;
+
             }
         }
     }

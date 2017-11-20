@@ -2,8 +2,8 @@ package com.demo.servicedemo;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.tony.downloadlib.TDownloadManager;
 import com.tony.downloadlib.interfaces.DownloadCallbacks;
@@ -15,12 +15,11 @@ import com.tony.downloadlib.model.DownloadModel;
  * Date: 2017/11/19
  * Time: 下午8:18
  * Description:
- * handle download callback
+ * handle download onComplete
  */
 public class SecondActivity extends Activity implements DownloadCallbacks {
 
     private TextView tvThread1, tvThread2;
-    private int count;
     private TextView tvThread3;
 
     @Override
@@ -41,24 +40,57 @@ public class SecondActivity extends Activity implements DownloadCallbacks {
     }
 
     @Override
-    public void callback(final DownloadModel model, String... args) {
+    public void onComplete(final DownloadModel model, String... args) {
         if (model.getUrl().contains(".apk")) {
             if (tvThread1 != null) {
-                tvThread1.setText(model.getUrl() + "=====" + args[0]);
+                tvThread1.setText("已下载完成,请到" + model.getDownloadPath() + "查看");
             }
         } else if (model.getUrl().contains(".exe")) {
             if (tvThread2 != null) {
-                tvThread2.setText(model.getUrl() + "=====" + args[0]);
+                tvThread2.setText("已下载完成,请到" + model.getDownloadPath() + "查看");
             }
         } else {
             if (tvThread3 != null) {
-                tvThread3.setText(model.getUrl() + "=====" + args[0]);
+                tvThread3.setText("已下载完成,请到" + model.getDownloadPath() + "查看");
+
             }
         }
     }
 
     @Override
-    public void callback2(DownloadModel model, Exception e) {
+    public void onFailed(DownloadModel model, Exception e) {
+        Log.d("=T=SecondActivity", "onFailed: " + model.getUrl());
+        Log.d("=T=SecondActivity", "onFailed: " + e.getMessage());
+    }
 
+    @Override
+    public void onCanceled() {
+        tvThread1.setText("已取消");
+    }
+
+    @Override
+    public void onWait(DownloadModel model) {
+        if (model.getUrl().contains(".apk")) {
+            tvThread1.setText("等待中...");
+        }
+        if (model.getUrl().contains(".exe")) {
+            tvThread2.setText("等待中...");
+        }
+        if (model.getUrl().contains(".dmg")) {
+            tvThread3.setText("等待中...");
+        }
+    }
+
+    @Override
+    public void onProgress(DownloadModel model, String progress) {
+        if (model.getUrl().contains(".apk")) {
+            tvThread1.setText(model.getDownloadPath() + "===>" + progress + "%");
+        }
+        if (model.getUrl().contains(".exe")) {
+            tvThread2.setText(model.getDownloadPath() + "===>" + progress + "%");
+        }
+        if (model.getUrl().contains(".dmg")) {
+            tvThread3.setText(model.getDownloadPath() + "===>" + progress + "%");
+        }
     }
 }

@@ -37,7 +37,7 @@ public class DownloadTask extends AsyncTask {
                 while (it.hasNext()) {
                     DownloadCallbacks listener = (DownloadCallbacks) it.next();
                     // FIXME: 2017/11/19 线程切换有问题
-                    listener.callback(model);
+                    listener.onComplete(model);
                 }
             }
         }

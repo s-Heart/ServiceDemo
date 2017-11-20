@@ -57,6 +57,9 @@ public class TDownloadManager implements ServiceConnection {
         context.bindService(new Intent(context, TDownloadService.class), this, Context.BIND_AUTO_CREATE);
     }
 
+    public Context getContext() {
+        return context;
+    }
     //region download proxy
 
     @Override

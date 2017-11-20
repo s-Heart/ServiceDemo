@@ -14,15 +14,19 @@ import java.io.Serializable;
  * 3.页面创建时需要注册，销毁时需要取消注册；
  */
 public interface DownloadCallbacks extends Serializable {
-    void callback(DownloadModel model, String... args);
+    int METHOD_ON_COMPLETE = 0;
+    int METHOD_ON_FAILED = 1;
+    int METHOD_ON_CANCELED = 2;
+    int METHOD_ON_WAIT = 3;
+    int METHOD_ON_PROGRESS = 4;
 
-    void callback2(DownloadModel model, Exception e);
+    void onComplete(DownloadModel model, String... args);
 
-    public class CallbackType {
-        public static final int METHOD_CALLBACK = 0;
-        public static final int METHOD_CALLBACK2 = 1;
+    void onFailed(DownloadModel model, Exception e);
 
-        public int methodCode;
+    void onCanceled();
 
-    }
+    void onWait(DownloadModel model);
+
+    void onProgress(DownloadModel model, String progress);
 }

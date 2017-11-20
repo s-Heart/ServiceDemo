@@ -13,9 +13,9 @@ import java.io.Serializable;
 public class DownloadModel implements Serializable {
     @Id
     private String url;
-    private int downloadState;
-    private int totalSize;
-    private int downloadSize;
+    private long downloadState;
+    private long totalSize;
+    private long downloadSize;
     private String downloadPath;
 
     public String getUrl() {
@@ -34,33 +34,36 @@ public class DownloadModel implements Serializable {
         this.downloadPath = downloadPath;
     }
 
-    public int getDownloadSize() {
-        return this.downloadSize;
-    }
 
-    public void setDownloadSize(int downloadSize) {
+    public void setDownloadSize(long downloadSize) {
         this.downloadSize = downloadSize;
     }
 
-    public int getTotalSize() {
-        return this.totalSize;
-    }
 
-    public void setTotalSize(int totalSize) {
+    public void setTotalSize(long totalSize) {
         this.totalSize = totalSize;
     }
 
-    public int getDownloadState() {
-        return this.downloadState;
-    }
 
-    public void setDownloadState(int downloadState) {
+    public void setDownloadState(long downloadState) {
         this.downloadState = downloadState;
     }
 
-    @Generated(hash = 1945830206)
-    public DownloadModel(String url, int downloadState, int totalSize,
-                         int downloadSize, String downloadPath) {
+    public long getDownloadSize() {
+        return this.downloadSize;
+    }
+
+    public long getTotalSize() {
+        return this.totalSize;
+    }
+
+    public long getDownloadState() {
+        return this.downloadState;
+    }
+
+    @Generated(hash = 1986461061)
+    public DownloadModel(String url, long downloadState, long totalSize,
+                         long downloadSize, String downloadPath) {
         this.url = url;
         this.downloadState = downloadState;
         this.totalSize = totalSize;
@@ -85,9 +88,9 @@ public class DownloadModel implements Serializable {
 
     public static final class Builder {
         private String url;
-        private int downloadState;
-        private int totalSize;
-        private int downloadSize;
+        private long downloadState;
+        private long totalSize;
+        private long downloadSize;
         private String downloadPath;
 
         public Builder() {
@@ -98,17 +101,17 @@ public class DownloadModel implements Serializable {
             return this;
         }
 
-        public Builder downloadState(int val) {
+        public Builder downloadState(long val) {
             downloadState = val;
             return this;
         }
 
-        public Builder totalSize(int val) {
+        public Builder totalSize(long val) {
             totalSize = val;
             return this;
         }
 
-        public Builder downloadSize(int val) {
+        public Builder downloadSize(long val) {
             downloadSize = val;
             return this;
         }

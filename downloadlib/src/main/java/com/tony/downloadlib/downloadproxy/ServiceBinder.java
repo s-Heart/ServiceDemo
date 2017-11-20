@@ -24,7 +24,6 @@ import java.util.concurrent.Executors;
  */
 
 public class ServiceBinder extends Binder implements DownloadActions {
-    private final DaoSession daoProxy;
     private ExecutorService pool;
     private Map<String, DownloadImpl> downloadQueue = new HashMap<>();
     private Vector uiListeners = new Vector();
@@ -32,7 +31,6 @@ public class ServiceBinder extends Binder implements DownloadActions {
 
     public ServiceBinder() {
         this.pool = Executors.newFixedThreadPool(3);
-        this.daoProxy = TDBManager.getInstance().getDaoSession();
     }
 
     //region DownloadActions
@@ -50,7 +48,6 @@ public class ServiceBinder extends Binder implements DownloadActions {
         downloadQueue.put(model.getUrl(), task);
         pool.execute(task);
 
-        daoProxy.getDownloadModelDao().insertOrReplace(model);
     }
 
     @Override
