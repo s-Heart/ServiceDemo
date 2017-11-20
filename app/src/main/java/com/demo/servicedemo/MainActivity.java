@@ -82,12 +82,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Down
                 TDownloadManager.getInstance().pauseDownload(model1);
                 break;
             case R.id.btn_start_download_2:
-                if (model2 == null) {
-                    model2 = new DownloadModel.Builder()
-                            .url(file2)
-                            .build();
-                    TDownloadManager.getInstance().startDownload(model2);
-                }
+                TDownloadManager.getInstance().startDownload(model2);
                 break;
             case R.id.btn_stop_download_2:
                 TDownloadManager.getInstance().pauseDownload(model2);
