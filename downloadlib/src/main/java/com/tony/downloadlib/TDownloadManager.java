@@ -91,6 +91,7 @@ public class TDownloadManager implements ServiceConnection {
     }
 
     public void pauseDownload(DownloadModel downloadModel) {
+
         if (this.downloadProxy == null) {
             return;
         }

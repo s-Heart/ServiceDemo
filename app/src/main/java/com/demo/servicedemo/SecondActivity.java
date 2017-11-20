@@ -64,8 +64,16 @@ public class SecondActivity extends Activity implements DownloadCallbacks {
     }
 
     @Override
-    public void onCanceled() {
-        tvThread1.setText("已取消");
+    public void onCanceled(DownloadModel model) {
+        if (model.getUrl().contains(".apk")) {
+            tvThread1.setText("state:" + "onCanceled...");
+        }
+        if (model.getUrl().contains(".exe")) {
+            tvThread2.setText("state:" + "onCanceled...");
+        }
+        if (model.getUrl().contains(".dmg")) {
+            tvThread3.setText("state:" + "onCanceled...");
+        }
     }
 
     @Override

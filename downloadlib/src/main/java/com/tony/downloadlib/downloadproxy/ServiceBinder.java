@@ -3,13 +3,10 @@ package com.tony.downloadlib.downloadproxy;
 import android.os.Binder;
 import android.util.Log;
 
-import com.tony.downloadlib.db.TDBManager;
-import com.tony.downloadlib.greendao.DaoSession;
 import com.tony.downloadlib.interfaces.DownloadActions;
 import com.tony.downloadlib.interfaces.DownloadCallbacks;
 import com.tony.downloadlib.model.DownloadModel;
 import com.tony.downloadlib.task.DownloadImpl;
-import com.tony.downloadlib.task.DownloadTask;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -52,11 +49,11 @@ public class ServiceBinder extends Binder implements DownloadActions {
 
     @Override
     public void pauseDownload(DownloadModel model) {
-        Log.d("=T=ServiceBinder", "pauseDownload: " + model.getUrl());
         Iterator iterator = downloadQueue.entrySet().iterator();
         while (iterator.hasNext()) {
             Map.Entry<String, DownloadImpl> entry = (Map.Entry<String, DownloadImpl>) iterator.next();
             if (entry.getKey().equals(model.getUrl())) {
+                Log.d("=T=ServiceBinder", "pauseDownload: " + model.getUrl());
                 entry.getValue().cancel(true);
                 iterator.remove();
                 break;

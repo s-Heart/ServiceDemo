@@ -106,20 +106,21 @@ public class DownloadImpl extends BaseTask {
                 while ((len = is.read(b)) != -1) {
                     if (isCanceled()) {
                         notifyUIFromWorkThread(DownloadCallbacks.METHOD_ON_CANCELED, uiListeners, model, null, null);
-                        return;
+                        break;
                     } else {
                         total += len;
                         savedFile.write(b, 0, len);
                         //计算已经下载的百分比
                         int progress = (int) ((total + downloadLength) * 100 / contentLength);
-
                         DBProxy.updateModelDownloadSize(model, total + downloadLength);
                         notifyUIFromWorkThread(DownloadCallbacks.METHOD_ON_PROGRESS, uiListeners, model, null, progress + "");
                     }
 
                 }
                 response.body().close();
-                notifyUIFromWorkThread(DownloadCallbacks.METHOD_ON_COMPLETE, uiListeners, model, null, null);
+                if (!isCanceled()) {
+                    notifyUIFromWorkThread(DownloadCallbacks.METHOD_ON_COMPLETE, uiListeners, model, null, null);
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -133,7 +134,6 @@ public class DownloadImpl extends BaseTask {
                     savedFile.close();
                 }
                 if (isCanceled() && file != null) {
-
                     notifyUIFromWorkThread(DownloadCallbacks.METHOD_ON_CANCELED, uiListeners, model, null, null);
                 }
             } catch (Exception e) {

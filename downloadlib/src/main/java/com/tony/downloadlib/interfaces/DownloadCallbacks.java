@@ -24,7 +24,7 @@ public interface DownloadCallbacks extends Serializable {
 
     void onFailed(DownloadModel model, Exception e);
 
-    void onCanceled();
+    void onCanceled(DownloadModel model);
 
     void onWait(DownloadModel model);
 

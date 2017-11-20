@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.tony.downloadlib.TDownloadManager;
@@ -21,18 +22,30 @@ public class MainActivity extends Activity implements View.OnClickListener, Down
     String file1 = "http://appstore.koolearn.com/files/apps/Koolearn_v3.1.5.apk";
     String file2 = "http://appstore.koolearn.com/files/apps/Koolearn_v2.4.10.exe";
     String file3 = "http://appstore.koolearn.com/files/apps/Koolearn_v0.8.9.dmg";
-    DownloadModel model1;
+    DownloadModel model1 = new DownloadModel.Builder().url(file1).build();
+    DownloadModel model2 = new DownloadModel.Builder().url(file2).build();
+    DownloadModel model3 = new DownloadModel.Builder().url(file3).build();
     ProgressBar bar1, bar2, bar3;
-    DownloadModel model2;
-    DownloadModel model3;
+    private TextView mState1, mState2, mState3;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        findViewById(R.id.btn_start_download).setOnClickListener(this);
-        findViewById(R.id.btn_stop_download).setOnClickListener(this);
+        findViewById(R.id.btn_start_download_1).setOnClickListener(this);
+        findViewById(R.id.btn_stop_download_1).setOnClickListener(this);
+        mState1 = (TextView) findViewById(R.id.tv_thread1_state);
+
+        findViewById(R.id.btn_start_download_2).setOnClickListener(this);
+        findViewById(R.id.btn_stop_download_2).setOnClickListener(this);
+        mState2 = (TextView) findViewById(R.id.tv_thread2_state);
+
+        findViewById(R.id.btn_start_download_3).setOnClickListener(this);
+        findViewById(R.id.btn_stop_download_3).setOnClickListener(this);
+        mState3 = (TextView) findViewById(R.id.tv_thread3_state);
+
+
         findViewById(R.id.btn_start_all).setOnClickListener(this);
         findViewById(R.id.btn_pause_all).setOnClickListener(this);
 
@@ -62,56 +75,35 @@ public class MainActivity extends Activity implements View.OnClickListener, Down
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.btn_start_download:
-                Toast.makeText(getApplicationContext(), "开始下载", Toast.LENGTH_SHORT).show();
-                if (model1 == null) {
-                    model1 = new DownloadModel.Builder()
-                            .url(file1)
-                            .build();
-                    TDownloadManager.getInstance().startDownload(model1);
-                    return;
-                }
+            case R.id.btn_start_download_1:
+                TDownloadManager.getInstance().startDownload(model1);
+                break;
+            case R.id.btn_stop_download_1:
+                TDownloadManager.getInstance().pauseDownload(model1);
+                break;
+            case R.id.btn_start_download_2:
                 if (model2 == null) {
                     model2 = new DownloadModel.Builder()
                             .url(file2)
                             .build();
                     TDownloadManager.getInstance().startDownload(model2);
-                    return;
-                }
-                if (model3 == null) {
-                    model3 = new DownloadModel.Builder()
-                            .url(file3)
-                            .build();
-                    TDownloadManager.getInstance().startDownload(model3);
-                    return;
                 }
                 break;
-            case R.id.btn_stop_download:
-                Toast.makeText(getApplicationContext(), "停止下载", Toast.LENGTH_SHORT).show();
-                if (model1 != null) {
-                    TDownloadManager.getInstance().pauseDownload(model1);
-                    model1 = null;
-                    return;
-                }
-                if (model2 != null) {
-                    TDownloadManager.getInstance().pauseDownload(model2);
-                    model2 = null;
-                    return;
-                }
-
-                if (model3 != null) {
-                    TDownloadManager.getInstance().pauseDownload(model3);
-                    model3 = null;
-                    return;
-                }
-
+            case R.id.btn_stop_download_2:
+                TDownloadManager.getInstance().pauseDownload(model2);
+                break;
+            case R.id.btn_start_download_3:
+                TDownloadManager.getInstance().startDownload(model3);
+                break;
+            case R.id.btn_stop_download_3:
+                TDownloadManager.getInstance().pauseDownload(model3);
                 break;
             case R.id.btn_start_all:
                 Toast.makeText(getApplicationContext(), "开始全部", Toast.LENGTH_SHORT).show();
                 List<DownloadModel> models = new ArrayList<>();
-                models.add(new DownloadModel.Builder().url(file1).build());
-                models.add(new DownloadModel.Builder().url(file2).build());
-                models.add(new DownloadModel.Builder().url(file3).build());
+                models.add(model1);
+                models.add(model2);
+                models.add(model3);
                 TDownloadManager.getInstance().startAll(models);
                 break;
             case R.id.btn_pause_all:
@@ -127,22 +119,57 @@ public class MainActivity extends Activity implements View.OnClickListener, Down
 
     @Override
     public void onComplete(DownloadModel model, String... args) {
-
+        if (model.getUrl().contains(".apk")) {
+            mState1.setText("state:" + "onComplete...");
+            bar1.setProgress(100);
+        }
+        if (model.getUrl().contains(".exe")) {
+            mState2.setText("state:" + "onComplete...");
+            bar2.setProgress(100);
+        }
+        if (model.getUrl().contains(".dmg")) {
+            mState3.setText("state:" + "onComplete...");
+            bar3.setProgress(100);
+        }
     }
 
     @Override
     public void onFailed(DownloadModel model, Exception e) {
-
+        if (model.getUrl().contains(".apk")) {
+            mState1.setText("state:" + "onFailed...");
+        }
+        if (model.getUrl().contains(".exe")) {
+            mState2.setText("state:" + "onFailed...");
+        }
+        if (model.getUrl().contains(".dmg")) {
+            mState3.setText("state:" + "onFailed...");
+        }
     }
 
     @Override
-    public void onCanceled() {
-
+    public void onCanceled(DownloadModel model) {
+        if (model.getUrl().contains(".apk")) {
+            mState1.setText("state:" + "onCanceled...");
+        }
+        if (model.getUrl().contains(".exe")) {
+            mState2.setText("state:" + "onCanceled...");
+        }
+        if (model.getUrl().contains(".dmg")) {
+            mState3.setText("state:" + "onCanceled...");
+        }
     }
 
     @Override
     public void onWait(DownloadModel model) {
-
+        if (model.getUrl().contains(".apk")) {
+            mState1.setText("state:" + "onWait...");
+        }
+        if (model.getUrl().contains(".exe")) {
+            mState2.setText("state:" + "onWait...");
+        }
+        if (model.getUrl().contains(".dmg")) {
+            mState3.setText("state:" + "onWait...");
+        }
     }
 
     @Override
@@ -150,12 +177,15 @@ public class MainActivity extends Activity implements View.OnClickListener, Down
 //        Log.d("=T=MainActivity", "onProgress: " + progress);
         if (model.getUrl().contains(".apk")) {
             bar1.setProgress(Integer.valueOf(progress));
+            mState1.setText("state:" + "onProgress...");
         }
         if (model.getUrl().contains(".exe")) {
             bar2.setProgress(Integer.valueOf(progress));
+            mState2.setText("state:" + "onProgress...");
         }
         if (model.getUrl().contains(".dmg")) {
             bar3.setProgress(Integer.valueOf(progress));
+            mState3.setText("state:" + "onProgress...");
         }
     }
 }

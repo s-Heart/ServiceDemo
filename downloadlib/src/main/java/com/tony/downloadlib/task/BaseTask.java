@@ -6,6 +6,8 @@ import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 
+import com.tony.downloadlib.TDownloadManager;
+import com.tony.downloadlib.db.TDBManager;
 import com.tony.downloadlib.interfaces.DownloadCallbacks;
 import com.tony.downloadlib.model.DownloadModel;
 
@@ -59,6 +61,7 @@ public abstract class BaseTask implements Runnable {
                         DownloadCallbacks listener = (DownloadCallbacks) iterator.next();
                         listener.onComplete(model, args);
                     }
+                    removeTask(model);
                     break;
                 case DownloadCallbacks.METHOD_ON_FAILED:
                     iterator = listeners.iterator();
@@ -71,7 +74,7 @@ public abstract class BaseTask implements Runnable {
                     iterator = listeners.iterator();
                     while (iterator.hasNext()) {
                         DownloadCallbacks listener = (DownloadCallbacks) iterator.next();
-                        listener.onCanceled();
+                        listener.onCanceled(model);
                     }
                     break;
                 case DownloadCallbacks.METHOD_ON_WAIT:
@@ -91,5 +94,14 @@ public abstract class BaseTask implements Runnable {
 
             }
         }
+    }
+
+    /**
+     * 已经完成的任务需要将池中任务移除
+     *
+     * @param model
+     */
+    private void removeTask(DownloadModel model) {
+        TDownloadManager.getInstance().pauseDownload(model);
     }
 }
