@@ -42,7 +42,7 @@ public class TDownloadManager implements ServiceConnection {
     public void init(Context context) {
         if (this.context == null) {
             this.context = context;
-            Log.d("==TDownloadManager", "init: ");
+            Log.d("=T=DownloadManager", "init: ");
             initBinder(context);
             initDB(context);
         }
@@ -64,13 +64,13 @@ public class TDownloadManager implements ServiceConnection {
         if (service instanceof ServiceBinder) {
             //get download proxy
             this.downloadProxy = (ServiceBinder) service;
-            Log.d("==TDownloadManager", "onServiceConnected: " + downloadProxy);
+            Log.d("=T=DownloadManager", "onServiceConnected: " + downloadProxy);
         }
     }
 
     @Override
     public void onServiceDisconnected(ComponentName name) {
-        Log.d("==TDownloadManager", "onServiceDisconnected: ");
+        Log.d("=T=DownloadManager", "onServiceDisconnected: ");
     }
 
     public void startDownload(DownloadModel downloadModel) {

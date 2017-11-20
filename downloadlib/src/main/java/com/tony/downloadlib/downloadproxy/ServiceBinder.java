@@ -8,6 +8,7 @@ import com.tony.downloadlib.greendao.DaoSession;
 import com.tony.downloadlib.interfaces.DownloadActions;
 import com.tony.downloadlib.interfaces.DownloadCallbacks;
 import com.tony.downloadlib.model.DownloadModel;
+import com.tony.downloadlib.task.DownloadImpl;
 import com.tony.downloadlib.task.DownloadTask;
 
 import java.util.HashMap;
@@ -25,7 +26,7 @@ import java.util.concurrent.Executors;
 public class ServiceBinder extends Binder implements DownloadActions {
     private final DaoSession daoProxy;
     private ExecutorService pool;
-    private Map<String, DownloadTask> downloadQueue = new HashMap<>();
+    private Map<String, DownloadImpl> downloadQueue = new HashMap<>();
     private Vector uiListeners = new Vector();
 
 
@@ -41,18 +42,23 @@ public class ServiceBinder extends Binder implements DownloadActions {
         if (downloadQueue.containsKey(model.getUrl())) {
             return;
         }
-        DownloadTask task = new DownloadTask(model,uiListeners);
+//        DownloadTask task = new DownloadTask(model, uiListeners);
+//        downloadQueue.put(model.getUrl(), task);
+//        task.executeOnExecutor(pool);
+
+        DownloadImpl task = new DownloadImpl(model, uiListeners);
         downloadQueue.put(model.getUrl(), task);
-        task.executeOnExecutor(pool);
+        pool.execute(task);
+
         daoProxy.getDownloadModelDao().insertOrReplace(model);
     }
 
     @Override
     public void pauseDownload(DownloadModel model) {
-        Log.d("==TServiceBinder", "pauseDownload: " + model.getUrl());
+        Log.d("=T=ServiceBinder", "pauseDownload: " + model.getUrl());
         Iterator iterator = downloadQueue.entrySet().iterator();
         while (iterator.hasNext()) {
-            Map.Entry<String, DownloadTask> entry = (Map.Entry<String, DownloadTask>) iterator.next();
+            Map.Entry<String, DownloadImpl> entry = (Map.Entry<String, DownloadImpl>) iterator.next();
             if (entry.getKey().equals(model.getUrl())) {
                 entry.getValue().cancel(true);
                 iterator.remove();
@@ -63,10 +69,10 @@ public class ServiceBinder extends Binder implements DownloadActions {
 
     @Override
     public void pauseAll() {
-        Log.d("==TServiceBinder", "pauseAll: ");
+        Log.d("=T=ServiceBinder", "pauseAll: ");
         Iterator iterator = downloadQueue.entrySet().iterator();
         while (iterator.hasNext()) {
-            Map.Entry<String, DownloadTask> entry = (Map.Entry<String, DownloadTask>) iterator.next();
+            Map.Entry<String, DownloadImpl> entry = (Map.Entry<String, DownloadImpl>) iterator.next();
             entry.getValue().cancel(true);
             iterator.remove();
         }

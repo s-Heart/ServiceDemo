@@ -4,11 +4,13 @@ import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Generated;
 
+import java.io.Serializable;
+
 /**
  * Created by tony on 2017/11/18.
  */
 @Entity
-public class DownloadModel {
+public class DownloadModel implements Serializable {
     @Id
     private String url;
     private int downloadState;
@@ -58,7 +60,7 @@ public class DownloadModel {
 
     @Generated(hash = 1945830206)
     public DownloadModel(String url, int downloadState, int totalSize,
-            int downloadSize, String downloadPath) {
+                         int downloadSize, String downloadPath) {
         this.url = url;
         this.downloadState = downloadState;
         this.totalSize = totalSize;

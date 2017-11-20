@@ -1,6 +1,5 @@
 package com.tony.downloadlib.task;
 
-import android.os.AsyncTask;
 import android.util.Log;
 
 import com.tony.downloadlib.interfaces.DownloadCallbacks;
@@ -10,20 +9,23 @@ import java.util.Iterator;
 import java.util.Vector;
 
 /**
- * Created by tony on 2017/11/19.
+ * Author: shishaojie
+ * Date: 2017/11/20 0020 10:17
+ * Description:
  */
-@Deprecated
-public class DownloadTask extends AsyncTask {
+public class DownloadImpl extends BaseTask {
+
     private final DownloadModel model;
     private final Vector<DownloadCallbacks> uiListeners;
+    private boolean mIsCancelled;
 
-    public DownloadTask(DownloadModel model, Vector<DownloadCallbacks> uiListeners) {
+    public DownloadImpl(DownloadModel model, Vector<DownloadCallbacks> uiListeners) {
         this.model = model;
         this.uiListeners = uiListeners;
     }
 
     @Override
-    protected Object doInBackground(Object[] objects) {
+    public void run() {
         int count = 0;
         while (!isCancelled()) {
             try {
@@ -36,17 +38,17 @@ public class DownloadTask extends AsyncTask {
                 Iterator it = uiListeners.iterator();
                 while (it.hasNext()) {
                     DownloadCallbacks listener = (DownloadCallbacks) it.next();
-                    // FIXME: 2017/11/19 线程切换有问题
-                    listener.callback(model);
+                    notifyUIFromWorkThread(DownloadCallbacks.CallbackType.METHOD_CALLBACK, listener, model, null, count + "");
                 }
             }
         }
-        return null;
     }
 
-    @Override
-    protected void onCancelled() {
-        Log.d("=T=DownloadTask", "onCancelled: " + model.getUrl());
-        super.onCancelled();
+    private boolean isCancelled() {
+        return mIsCancelled;
+    }
+
+    public void cancel(boolean isCancelled) {
+        this.mIsCancelled = isCancelled;
     }
 }

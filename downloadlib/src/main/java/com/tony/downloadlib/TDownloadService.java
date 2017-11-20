@@ -16,7 +16,7 @@ public class TDownloadService extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
-        Log.d("==TDownloadService", "onBind: ");
+        Log.d("=T=DownloadService", "onBind: ");
         return binder;
     }
 
@@ -29,18 +29,18 @@ public class TDownloadService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        Log.d("==TDownloadService", "onCreate: ");
+        Log.d("=T=DownloadService", "onCreate: ");
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.d("==TDownloadService", "onStartCommand: ");
+        Log.d("=T=DownloadService", "onStartCommand: ");
         return super.onStartCommand(intent, flags, startId);
     }
 
     @Override
     public void onDestroy() {
-        Log.d("==TDownloadService", "onDestroy: ");
+        Log.d("=T=DownloadService", "onDestroy: ");
         if (binder != null) {
             binder.pauseAll();
         }

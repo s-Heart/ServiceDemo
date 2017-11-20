@@ -3,6 +3,7 @@ package com.demo.servicedemo;
 import android.app.Activity;
 import android.os.Bundle;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.tony.downloadlib.TDownloadManager;
 import com.tony.downloadlib.interfaces.DownloadCallbacks;
@@ -40,25 +41,24 @@ public class SecondActivity extends Activity implements DownloadCallbacks {
     }
 
     @Override
-    public void callback(final DownloadModel model) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (model.getUrl().contains(".apk")) {
-                    if (tvThread1 != null) {
-                        tvThread1.setText(model.getUrl() + count++);
-                    }
-                } else if (model.getUrl().contains(".exe")) {
-                    if (tvThread2 != null) {
-                        tvThread2.setText(model.getUrl() + count++);
-                    }
-                } else {
-                    if (tvThread3 != null) {
-                        tvThread3.setText(model.getUrl() + count++);
-                    }
-                }
-//                Toast.makeText(getApplicationContext(), model.getUrl(), Toast.LENGTH_SHORT).show();
+    public void callback(final DownloadModel model, String... args) {
+        if (model.getUrl().contains(".apk")) {
+            if (tvThread1 != null) {
+                tvThread1.setText(model.getUrl() + "=====" + args[0]);
             }
-        });
+        } else if (model.getUrl().contains(".exe")) {
+            if (tvThread2 != null) {
+                tvThread2.setText(model.getUrl() + "=====" + args[0]);
+            }
+        } else {
+            if (tvThread3 != null) {
+                tvThread3.setText(model.getUrl() + "=====" + args[0]);
+            }
+        }
+    }
+
+    @Override
+    public void callback2(DownloadModel model, Exception e) {
+
     }
 }
