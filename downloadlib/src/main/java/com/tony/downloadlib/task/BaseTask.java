@@ -110,6 +110,6 @@ public abstract class BaseTask implements Runnable {
      * @param model
      */
     private void removeTask(DownloadModel model) {
-        TDownloadManager.getInstance().pauseDownload(model);
+        TDownloadManager.getInstance().removeTask(model);
     }
 }

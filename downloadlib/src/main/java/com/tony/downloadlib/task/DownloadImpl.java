@@ -101,9 +101,8 @@ public class DownloadImpl extends BaseTask {
                 savedFile = new RandomAccessFile(file, "rw");
                 savedFile.seek(downloadLength);//跳过已经下载的字节
                 //读写效率，如果只是1k的buffer，下载速度显示在100k左右
-                //如果是100k的buffer，下载速度显示在1M左右
-                // TODO: 2017/11/22 继续测试
-                byte[] buffer = new byte[1024 * 100];
+                //将缓冲区改为5m,下载速度显示在1.3M/s左右
+                byte[] buffer = new byte[1024 * 1024 * 5];
                 long total = 0;
                 int len;
                 while ((len = is.read(buffer)) != -1) {

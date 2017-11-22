@@ -84,6 +84,18 @@ public class ServiceBinder extends Binder implements DownloadActions {
         }
     }
 
+    public void removeTask(DownloadModel model) {
+        Iterator iterator=downloadQueue.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<String, DownloadImpl> entry = (Map.Entry<String, DownloadImpl>) iterator.next();
+            if (entry.getKey().equals(model.getUrl())) {
+                Log.d("=T=ServiceBinder", "removeTask: " + model.getUrl());
+                iterator.remove();
+                break;
+            }
+        }
+    }
+
     //endregion
 
     //region DownloadCallbacks
