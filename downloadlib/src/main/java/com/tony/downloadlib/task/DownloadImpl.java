@@ -100,16 +100,19 @@ public class DownloadImpl extends BaseTask {
                 is = response.body().byteStream();
                 savedFile = new RandomAccessFile(file, "rw");
                 savedFile.seek(downloadLength);//跳过已经下载的字节
-                byte[] b = new byte[1024];
+                //读写效率，如果只是1k的buffer，下载速度显示在100k左右
+                //如果是100k的buffer，下载速度显示在1M左右
+                // TODO: 2017/11/22 继续测试
+                byte[] buffer = new byte[1024 * 100];
                 long total = 0;
                 int len;
-                while ((len = is.read(b)) != -1) {
+                while ((len = is.read(buffer)) != -1) {
                     if (isCanceled()) {
                         notifyUIFromWorkThread(DownloadCallbacks.METHOD_ON_CANCELED, uiListeners, model, null, null);
                         break;
                     } else {
                         total += len;
-                        savedFile.write(b, 0, len);
+                        savedFile.write(buffer, 0, len);
                         //计算已经下载的百分比
                         int progress = (int) ((total + downloadLength) * 100 / contentLength);
                         DBProxy.updateModelDownloadSize(model, total + downloadLength);
