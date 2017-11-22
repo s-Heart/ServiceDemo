@@ -19,7 +19,8 @@ import java.util.List;
 
 
 public class MainActivity extends Activity implements View.OnClickListener, DownloadCallbacks {
-    String file1 = "http://appstore.koolearn.com/files/apps/Koolearn_v3.1.5.apk";
+    //    String file1 = "http://appstore.koolearn.com/files/apps/Koolearn_v3.1.5.apk";
+    String file1 = "http://preview.zhiupimg.cn/group1/M00/00/68/rBAUC1oL8xuATB1CAAgs0LUjDVU169.pdf";
     String file2 = "http://appstore.koolearn.com/files/apps/Koolearn_v2.4.10.exe";
     String file3 = "http://appstore.koolearn.com/files/apps/Koolearn_v0.8.9.dmg";
     DownloadModel model1 = new DownloadModel.Builder().url(file1).build();
@@ -139,7 +140,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Down
 
     @Override
     public void onComplete(DownloadModel model, String... args) {
-        if (model.getUrl().contains(".apk")) {
+        if (model.getUrl().contains(".apk") || model.getUrl().contains(".pdf")) {
             mState1.setText("state:" + "onComplete...");
             bar1.setProgress(100);
         }
@@ -155,7 +156,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Down
 
     @Override
     public void onFailed(DownloadModel model, Exception e) {
-        if (model.getUrl().contains(".apk")) {
+        if (model.getUrl().contains(".apk") || model.getUrl().contains(".pdf")) {
             mState1.setText("state:" + "onFailed...");
         }
         if (model.getUrl().contains(".exe")) {
@@ -168,7 +169,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Down
 
     @Override
     public void onCanceled(DownloadModel model) {
-        if (model.getUrl().contains(".apk")) {
+        if (model.getUrl().contains(".apk") || model.getUrl().contains(".pdf")) {
             mState1.setText("state:" + "onCanceled...");
         }
         if (model.getUrl().contains(".exe")) {
@@ -181,7 +182,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Down
 
     @Override
     public void onWait(DownloadModel model) {
-        if (model.getUrl().contains(".apk")) {
+        if (model.getUrl().contains(".apk") || model.getUrl().contains(".pdf")) {
             mState1.setText("state:" + "onWait...");
         }
         if (model.getUrl().contains(".exe")) {
@@ -195,7 +196,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Down
     @Override
     public void onProgress(DownloadModel model, String progress) {
 //        Log.d("=T=MainActivity", "onProgress: " + progress);
-        if (model.getUrl().contains(".apk")) {
+        if (model.getUrl().contains(".apk") || model.getUrl().contains(".pdf")) {
             bar1.setProgress(Integer.valueOf(progress));
             mState1.setText("state:" + "onProgress...");
         }
