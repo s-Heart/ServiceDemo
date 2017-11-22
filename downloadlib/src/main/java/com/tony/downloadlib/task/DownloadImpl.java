@@ -48,7 +48,7 @@ public class DownloadImpl extends BaseTask {
                 .readTimeout(60, TimeUnit.SECONDS)
                 .build();
         Log.d("=T=DownloadImpl", "DownloadImpl: ");
-        notifyUIFromWorkThread(DownloadCallbacks.METHOD_ON_WAIT, uiListeners, this.model, null, null);
+        notifyUIFromWorkThread(DownloadCallbacks.CallbackType.METHOD_ON_WAIT, uiListeners, this.model, null, null);
     }
 
     @Override
@@ -75,11 +75,11 @@ public class DownloadImpl extends BaseTask {
         //得到下载内容的大小
         long contentLength = getContentLength(downloadUrl);
         if (contentLength == 0) {
-            notifyUIFromWorkThread(DownloadCallbacks.METHOD_ON_FAILED, uiListeners, model, new Exception("请检查网络连接"), null);
+            notifyUIFromWorkThread(DownloadCallbacks.CallbackType.METHOD_ON_FAILED, uiListeners, model, new Exception("请检查网络连接"), null);
             return;
         } else if (contentLength == downloadLength) {
             //已下载字节和文件总字节相等，说明已经下载完成了
-            notifyUIFromWorkThread(DownloadCallbacks.METHOD_ON_COMPLETE, uiListeners, model, null, null);
+            notifyUIFromWorkThread(DownloadCallbacks.CallbackType.METHOD_ON_COMPLETE, uiListeners, model, null, null);
             return;
         } else {
             DBProxy.updateModelTotalSize(model, contentLength);
@@ -108,7 +108,7 @@ public class DownloadImpl extends BaseTask {
                 int len;
                 while ((len = is.read(buffer)) != -1) {
                     if (isCanceled()) {
-                        notifyUIFromWorkThread(DownloadCallbacks.METHOD_ON_CANCELED, uiListeners, model, null, null);
+                        notifyUIFromWorkThread(DownloadCallbacks.CallbackType.METHOD_ON_CANCELED, uiListeners, model, null, null);
                         break;
                     } else {
                         total += len;
@@ -116,18 +116,18 @@ public class DownloadImpl extends BaseTask {
                         //计算已经下载的百分比
                         int progress = (int) ((total + downloadLength) * 100 / contentLength);
                         DBProxy.updateModelDownloadSize(model, total + downloadLength);
-                        notifyUIFromWorkThread(DownloadCallbacks.METHOD_ON_PROGRESS, uiListeners, model, null, progress + "");
+                        notifyUIFromWorkThread(DownloadCallbacks.CallbackType.METHOD_ON_PROGRESS, uiListeners, model, null, progress + "");
                     }
 
                 }
                 response.body().close();
                 if (!isCanceled()) {
-                    notifyUIFromWorkThread(DownloadCallbacks.METHOD_ON_COMPLETE, uiListeners, model, null, null);
+                    notifyUIFromWorkThread(DownloadCallbacks.CallbackType.METHOD_ON_COMPLETE, uiListeners, model, null, null);
                 }
             }
         } catch (IOException e) {
             e.printStackTrace();
-            notifyUIFromWorkThread(DownloadCallbacks.METHOD_ON_FAILED, uiListeners, model, e, null);
+            notifyUIFromWorkThread(DownloadCallbacks.CallbackType.METHOD_ON_FAILED, uiListeners, model, e, null);
         } finally {
             try {
                 if (is != null) {
@@ -137,7 +137,7 @@ public class DownloadImpl extends BaseTask {
                     savedFile.close();
                 }
                 if (isCanceled() && file != null) {
-                    notifyUIFromWorkThread(DownloadCallbacks.METHOD_ON_CANCELED, uiListeners, model, null, null);
+                    notifyUIFromWorkThread(DownloadCallbacks.CallbackType.METHOD_ON_CANCELED, uiListeners, model, null, null);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
