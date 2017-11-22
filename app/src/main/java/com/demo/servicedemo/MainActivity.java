@@ -35,19 +35,26 @@ public class MainActivity extends Activity implements View.OnClickListener, Down
         setContentView(R.layout.activity_main);
         findViewById(R.id.btn_start_download_1).setOnClickListener(this);
         findViewById(R.id.btn_stop_download_1).setOnClickListener(this);
+        findViewById(R.id.btn_delete_download_1).setOnClickListener(this);
         mState1 = (TextView) findViewById(R.id.tv_thread1_state);
 
         findViewById(R.id.btn_start_download_2).setOnClickListener(this);
         findViewById(R.id.btn_stop_download_2).setOnClickListener(this);
+        findViewById(R.id.btn_delete_download_2).setOnClickListener(this);
+
         mState2 = (TextView) findViewById(R.id.tv_thread2_state);
 
         findViewById(R.id.btn_start_download_3).setOnClickListener(this);
         findViewById(R.id.btn_stop_download_3).setOnClickListener(this);
+        findViewById(R.id.btn_delete_download_3).setOnClickListener(this);
+
         mState3 = (TextView) findViewById(R.id.tv_thread3_state);
 
 
         findViewById(R.id.btn_start_all).setOnClickListener(this);
         findViewById(R.id.btn_pause_all).setOnClickListener(this);
+        findViewById(R.id.btn_delete_all).setOnClickListener(this);
+
 
         bar1 = (ProgressBar) findViewById(R.id.progressbar_1);
         bar1.setMax(100);
@@ -76,22 +83,34 @@ public class MainActivity extends Activity implements View.OnClickListener, Down
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_start_download_1:
+                model1 = new DownloadModel.Builder().url(file1).build();
                 TDownloadManager.getInstance().startDownload(model1);
                 break;
             case R.id.btn_stop_download_1:
                 TDownloadManager.getInstance().pauseDownload(model1);
                 break;
+            case R.id.btn_delete_download_1:
+                TDownloadManager.getInstance().deleteDownload(model1);
+                break;
             case R.id.btn_start_download_2:
+                model2 = new DownloadModel.Builder().url(file1).build();
                 TDownloadManager.getInstance().startDownload(model2);
                 break;
             case R.id.btn_stop_download_2:
                 TDownloadManager.getInstance().pauseDownload(model2);
                 break;
+            case R.id.btn_delete_download_2:
+                TDownloadManager.getInstance().deleteDownload(model2);
+                break;
             case R.id.btn_start_download_3:
+                model3 = new DownloadModel.Builder().url(file1).build();
                 TDownloadManager.getInstance().startDownload(model3);
                 break;
             case R.id.btn_stop_download_3:
                 TDownloadManager.getInstance().pauseDownload(model3);
+                break;
+            case R.id.btn_delete_download_3:
+                TDownloadManager.getInstance().deleteDownload(model3);
                 break;
             case R.id.btn_start_all:
                 Toast.makeText(getApplicationContext(), "开始全部", Toast.LENGTH_SHORT).show();
@@ -105,7 +124,13 @@ public class MainActivity extends Activity implements View.OnClickListener, Down
                 Toast.makeText(getApplicationContext(), "停止全部", Toast.LENGTH_SHORT).show();
                 TDownloadManager.getInstance().pauseAll();
                 break;
-
+            case R.id.btn_delete_all:
+                List<DownloadModel> models2 = new ArrayList<>();
+                models2.add(model1);
+                models2.add(model2);
+                models2.add(model3);
+                TDownloadManager.getInstance().deleteDownloads(models2);
+                break;
             case R.id.btn_jump_activity:
                 startActivity(new Intent(this, SecondActivity.class));
                 break;

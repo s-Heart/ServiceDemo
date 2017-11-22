@@ -25,10 +25,11 @@ public class DownloadModelDao extends AbstractDao<DownloadModel, String> {
     */
     public static class Properties {
         public final static Property Url = new Property(0, String.class, "url", true, "URL");
-        public final static Property DownloadState = new Property(1, long.class, "downloadState", false, "DOWNLOAD_STATE");
-        public final static Property TotalSize = new Property(2, long.class, "totalSize", false, "TOTAL_SIZE");
-        public final static Property DownloadSize = new Property(3, long.class, "downloadSize", false, "DOWNLOAD_SIZE");
-        public final static Property DownloadPath = new Property(4, String.class, "downloadPath", false, "DOWNLOAD_PATH");
+        public final static Property FileName = new Property(1, String.class, "fileName", false, "FILE_NAME");
+        public final static Property DownloadState = new Property(2, long.class, "downloadState", false, "DOWNLOAD_STATE");
+        public final static Property TotalSize = new Property(3, long.class, "totalSize", false, "TOTAL_SIZE");
+        public final static Property DownloadSize = new Property(4, long.class, "downloadSize", false, "DOWNLOAD_SIZE");
+        public final static Property DownloadPath = new Property(5, String.class, "downloadPath", false, "DOWNLOAD_PATH");
     };
 
 
@@ -45,10 +46,11 @@ public class DownloadModelDao extends AbstractDao<DownloadModel, String> {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"DOWNLOAD_MODEL\" (" + //
                 "\"URL\" TEXT PRIMARY KEY NOT NULL ," + // 0: url
-                "\"DOWNLOAD_STATE\" INTEGER NOT NULL ," + // 1: downloadState
-                "\"TOTAL_SIZE\" INTEGER NOT NULL ," + // 2: totalSize
-                "\"DOWNLOAD_SIZE\" INTEGER NOT NULL ," + // 3: downloadSize
-                "\"DOWNLOAD_PATH\" TEXT);"); // 4: downloadPath
+                "\"FILE_NAME\" TEXT," + // 1: fileName
+                "\"DOWNLOAD_STATE\" INTEGER NOT NULL ," + // 2: downloadState
+                "\"TOTAL_SIZE\" INTEGER NOT NULL ," + // 3: totalSize
+                "\"DOWNLOAD_SIZE\" INTEGER NOT NULL ," + // 4: downloadSize
+                "\"DOWNLOAD_PATH\" TEXT);"); // 5: downloadPath
     }
 
     /** Drops the underlying database table. */
@@ -65,13 +67,18 @@ public class DownloadModelDao extends AbstractDao<DownloadModel, String> {
         if (url != null) {
             stmt.bindString(1, url);
         }
-        stmt.bindLong(2, entity.getDownloadState());
-        stmt.bindLong(3, entity.getTotalSize());
-        stmt.bindLong(4, entity.getDownloadSize());
+ 
+        String fileName = entity.getFileName();
+        if (fileName != null) {
+            stmt.bindString(2, fileName);
+        }
+        stmt.bindLong(3, entity.getDownloadState());
+        stmt.bindLong(4, entity.getTotalSize());
+        stmt.bindLong(5, entity.getDownloadSize());
  
         String downloadPath = entity.getDownloadPath();
         if (downloadPath != null) {
-            stmt.bindString(5, downloadPath);
+            stmt.bindString(6, downloadPath);
         }
     }
 
@@ -83,13 +90,18 @@ public class DownloadModelDao extends AbstractDao<DownloadModel, String> {
         if (url != null) {
             stmt.bindString(1, url);
         }
-        stmt.bindLong(2, entity.getDownloadState());
-        stmt.bindLong(3, entity.getTotalSize());
-        stmt.bindLong(4, entity.getDownloadSize());
+ 
+        String fileName = entity.getFileName();
+        if (fileName != null) {
+            stmt.bindString(2, fileName);
+        }
+        stmt.bindLong(3, entity.getDownloadState());
+        stmt.bindLong(4, entity.getTotalSize());
+        stmt.bindLong(5, entity.getDownloadSize());
  
         String downloadPath = entity.getDownloadPath();
         if (downloadPath != null) {
-            stmt.bindString(5, downloadPath);
+            stmt.bindString(6, downloadPath);
         }
     }
 
@@ -102,10 +114,11 @@ public class DownloadModelDao extends AbstractDao<DownloadModel, String> {
     public DownloadModel readEntity(Cursor cursor, int offset) {
         DownloadModel entity = new DownloadModel( //
             cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0), // url
-            cursor.getLong(offset + 1), // downloadState
-            cursor.getLong(offset + 2), // totalSize
-            cursor.getLong(offset + 3), // downloadSize
-            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4) // downloadPath
+            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // fileName
+            cursor.getLong(offset + 2), // downloadState
+            cursor.getLong(offset + 3), // totalSize
+            cursor.getLong(offset + 4), // downloadSize
+            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5) // downloadPath
         );
         return entity;
     }
@@ -113,10 +126,11 @@ public class DownloadModelDao extends AbstractDao<DownloadModel, String> {
     @Override
     public void readEntity(Cursor cursor, DownloadModel entity, int offset) {
         entity.setUrl(cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0));
-        entity.setDownloadState(cursor.getLong(offset + 1));
-        entity.setTotalSize(cursor.getLong(offset + 2));
-        entity.setDownloadSize(cursor.getLong(offset + 3));
-        entity.setDownloadPath(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
+        entity.setFileName(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
+        entity.setDownloadState(cursor.getLong(offset + 2));
+        entity.setTotalSize(cursor.getLong(offset + 3));
+        entity.setDownloadSize(cursor.getLong(offset + 4));
+        entity.setDownloadPath(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
      }
     
     @Override

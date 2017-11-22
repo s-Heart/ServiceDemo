@@ -19,4 +19,8 @@ public interface DownloadActions {
     void pauseAll();
 
     void startAll(List<DownloadModel> models);
+
+    void deleteDownload(DownloadModel model);
+
+    void deleteDownloads(List<DownloadModel> models);
 }

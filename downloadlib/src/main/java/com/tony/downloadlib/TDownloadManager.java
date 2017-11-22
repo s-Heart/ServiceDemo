@@ -112,6 +112,20 @@ public class TDownloadManager implements ServiceConnection {
         downloadProxy.removeTask(model);
     }
 
+    public void deleteDownload(DownloadModel model) {
+        if (this.downloadProxy == null) {
+            return;
+        }
+        downloadProxy.deleteDownload(model);
+    }
+
+    public void deleteDownloads(List<DownloadModel> models) {
+        if (this.downloadProxy == null) {
+            return;
+        }
+        downloadProxy.deleteDownloads(models);
+    }
+
     //endregion
 
     //region uiCallbacks

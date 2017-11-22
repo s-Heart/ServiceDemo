@@ -48,6 +48,8 @@ public class DownloadImpl extends BaseTask {
                 .readTimeout(60, TimeUnit.SECONDS)
                 .build();
         Log.d("=T=DownloadImpl", "DownloadImpl: ");
+        String fileName = model.getUrl().substring(model.getUrl().lastIndexOf("/") + 1);
+        model.setFileName(fileName);
         notifyUIFromWorkThread(DownloadCallbacks.CallbackType.METHOD_ON_WAIT, uiListeners, this.model, null, null);
     }
 
@@ -60,14 +62,13 @@ public class DownloadImpl extends BaseTask {
         //文件下载地址
         String downloadUrl = model.getUrl();
         //下载文件的名称
-        String fileName = downloadUrl.substring(downloadUrl.lastIndexOf("/"));
+        String fileName = downloadUrl.substring(downloadUrl.lastIndexOf("/") + 1);
 //        Log.d("=T=DownloadImpl", "run: " + fileName);
         //下载文件存放的目录
         String directory = TDownloadManager.getInstance().getContext().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).getPath();
-        DBProxy.updateModelDownloadPath(model, directory + fileName);
-//        Log.d("=T=DownloadImpl", "run: " + directory + fileName);
+        DBProxy.updateModelDownloadPath(model, directory + "/" + fileName, fileName);
         //创建一个文件
-        file = new File(directory + fileName);
+        file = new File(directory + "/" + fileName);
         if (file.exists()) {
             //如果文件存在的话，得到文件的大小
             downloadLength = file.length();
@@ -84,17 +85,18 @@ public class DownloadImpl extends BaseTask {
         } else {
             DBProxy.updateModelTotalSize(model, contentLength);
         }
-        /**
-         * HTTP请求是有一个Header的，里面有个Range属性是定义下载区域的，它接收的值是一个区间范围，
-         * 比如：Range:bytes=0-10000。这样我们就可以按照一定的规则，将一个大文件拆分为若干很小的部分，
-         * 然后分批次的下载，每个小块下载完成之后，再合并到文件中；这样即使下载中断了，重新下载时，
-         * 也可以通过文件的字节长度来判断下载的起始点，然后重启断点续传的过程，直到最后完成下载过程。
-         */
-        Request request = new Request.Builder()
-                .addHeader("RANGE", "bytes=" + downloadLength + "-")  //断点续传要用到的，指示下载的区间
-                .url(downloadUrl)
-                .build();
+
         try {
+            /**
+             * HTTP请求是有一个Header的，里面有个Range属性是定义下载区域的，它接收的值是一个区间范围，
+             * 比如：Range:bytes=0-10000。这样我们就可以按照一定的规则，将一个大文件拆分为若干很小的部分，
+             * 然后分批次的下载，每个小块下载完成之后，再合并到文件中；这样即使下载中断了，重新下载时，
+             * 也可以通过文件的字节长度来判断下载的起始点，然后重启断点续传的过程，直到最后完成下载过程。
+             */
+            Request request = new Request.Builder()
+                    .addHeader("RANGE", "bytes=" + downloadLength + "-")  //断点续传要用到的，指示下载的区间
+                    .url(downloadUrl)
+                    .build();
             Response response = client.newCall(request).execute();
             if (response != null) {
                 is = response.body().byteStream();

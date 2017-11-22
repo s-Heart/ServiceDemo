@@ -3,6 +3,7 @@ package com.tony.downloadlib.downloadproxy;
 import android.os.Binder;
 import android.util.Log;
 
+import com.tony.downloadlib.db.DBProxy;
 import com.tony.downloadlib.interfaces.DownloadActions;
 import com.tony.downloadlib.interfaces.DownloadCallbacks;
 import com.tony.downloadlib.model.DownloadModel;
@@ -85,7 +86,7 @@ public class ServiceBinder extends Binder implements DownloadActions {
     }
 
     public void removeTask(DownloadModel model) {
-        Iterator iterator=downloadQueue.entrySet().iterator();
+        Iterator iterator = downloadQueue.entrySet().iterator();
         while (iterator.hasNext()) {
             Map.Entry<String, DownloadImpl> entry = (Map.Entry<String, DownloadImpl>) iterator.next();
             if (entry.getKey().equals(model.getUrl())) {
@@ -93,6 +94,19 @@ public class ServiceBinder extends Binder implements DownloadActions {
                 iterator.remove();
                 break;
             }
+        }
+    }
+
+    @Override
+    public void deleteDownload(DownloadModel model) {
+        pauseDownload(model);
+        DBProxy.deleteModel(model);
+    }
+
+    @Override
+    public void deleteDownloads(List<DownloadModel> models) {
+        for (DownloadModel model : models) {
+            deleteDownload(model);
         }
     }
 

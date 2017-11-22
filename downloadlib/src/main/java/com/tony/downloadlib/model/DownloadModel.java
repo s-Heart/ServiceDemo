@@ -13,6 +13,7 @@ import java.io.Serializable;
 public class DownloadModel implements Serializable {
     @Id
     private String url;
+    private String fileName;
     private long downloadState;
     private long totalSize;
     private long downloadSize;
@@ -61,10 +62,19 @@ public class DownloadModel implements Serializable {
         return this.downloadState;
     }
 
-    @Generated(hash = 1986461061)
-    public DownloadModel(String url, long downloadState, long totalSize,
-                         long downloadSize, String downloadPath) {
+    public String getFileName() {
+        return this.fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+    @Generated(hash = 1344188521)
+    public DownloadModel(String url, String fileName, long downloadState,
+            long totalSize, long downloadSize, String downloadPath) {
         this.url = url;
+        this.fileName = fileName;
         this.downloadState = downloadState;
         this.totalSize = totalSize;
         this.downloadSize = downloadSize;
@@ -79,15 +89,16 @@ public class DownloadModel implements Serializable {
 
     private DownloadModel(Builder builder) {
         setUrl(builder.url);
+        setFileName(builder.fileName);
         setDownloadState(builder.downloadState);
         setTotalSize(builder.totalSize);
         setDownloadSize(builder.downloadSize);
         setDownloadPath(builder.downloadPath);
     }
 
-
     public static final class Builder {
         private String url;
+        private String fileName;
         private long downloadState;
         private long totalSize;
         private long downloadSize;
@@ -98,6 +109,11 @@ public class DownloadModel implements Serializable {
 
         public Builder url(String val) {
             url = val;
+            return this;
+        }
+
+        public Builder fileName(String val) {
+            fileName = val;
             return this;
         }
 

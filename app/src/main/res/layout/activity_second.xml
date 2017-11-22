@@ -6,6 +6,7 @@
 
 
     <TextView
+        android:id="@+id/tv_file_name_1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="thread1:callback" />
@@ -17,6 +18,7 @@
         android:text="callback" />
 
     <TextView
+        android:id="@+id/tv_file_name_2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="thread2:callback" />
@@ -28,6 +30,7 @@
         android:text="callback" />
 
     <TextView
+        android:id="@+id/tv_file_name_3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="thread3:callback" />

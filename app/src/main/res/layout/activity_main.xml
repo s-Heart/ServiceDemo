@@ -42,6 +42,12 @@
             android:layout_height="52dp"
             android:text="停止下载" />
 
+        <Button
+            android:id="@+id/btn_delete_download_1"
+            android:layout_width="wrap_content"
+            android:layout_height="52dp"
+            android:text="删除下载" />
+
         <TextView
             android:id="@+id/tv_thread1_state"
             android:layout_width="wrap_content"
@@ -81,6 +87,13 @@
             android:layout_width="wrap_content"
             android:layout_height="52dp"
             android:text="停止下载" />
+
+        <Button
+            android:id="@+id/btn_delete_download_2"
+            android:layout_width="wrap_content"
+            android:layout_height="52dp"
+            android:text="删除下载" />
+
         <TextView
             android:id="@+id/tv_thread2_state"
             android:layout_width="wrap_content"
@@ -120,6 +133,13 @@
             android:layout_width="wrap_content"
             android:layout_height="52dp"
             android:text="停止下载" />
+
+        <Button
+            android:id="@+id/btn_delete_download_3"
+            android:layout_width="wrap_content"
+            android:layout_height="52dp"
+            android:text="删除下载" />
+
         <TextView
             android:id="@+id/tv_thread3_state"
             android:layout_width="wrap_content"
@@ -139,6 +159,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="暂停全部下载" />
+
+    <Button
+        android:id="@+id/btn_delete_all"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="删除全部下载" />
 
     <Button
         android:id="@+id/btn_jump_activity"
