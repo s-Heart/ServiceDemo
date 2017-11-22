@@ -14,11 +14,13 @@ import java.io.Serializable;
  * 3.页面创建时需要注册，销毁时需要取消注册；
  */
 public interface DownloadCallbacks extends Serializable {
-    int METHOD_ON_COMPLETE = 0;
-    int METHOD_ON_FAILED = 1;
-    int METHOD_ON_CANCELED = 2;
-    int METHOD_ON_WAIT = 3;
-    int METHOD_ON_PROGRESS = 4;
+    interface CallbackType {
+        int METHOD_ON_COMPLETE = 0;
+        int METHOD_ON_FAILED = 1;
+        int METHOD_ON_CANCELED = 2;
+        int METHOD_ON_WAIT = 3;
+        int METHOD_ON_PROGRESS = 4;
+    }
 
     void onComplete(DownloadModel model, String... args);
 

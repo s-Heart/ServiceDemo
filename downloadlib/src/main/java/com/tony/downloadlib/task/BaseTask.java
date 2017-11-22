@@ -26,6 +26,13 @@ public abstract class BaseTask implements Runnable {
 
     private Handler innerHandler = new InnerHandler(Looper.getMainLooper());
 
+    /**
+     * @param callbackType {@link DownloadCallbacks.CallbackType}
+     * @param listeners
+     * @param model
+     * @param e
+     * @param args
+     */
     void notifyUIFromWorkThread(int callbackType, Vector listeners, @NotNull DownloadModel model, Exception e, String args) {
         // 线程切换
 //        Log.d("=T=BaseTask", "notifyUIFromWorkThread: " + Thread.currentThread().getName());
@@ -56,35 +63,36 @@ public abstract class BaseTask implements Runnable {
             String args = data.getString("args");
             Iterator iterator = listeners.iterator();
             switch (methodCode) {
-                case DownloadCallbacks.METHOD_ON_COMPLETE:
+                case DownloadCallbacks.CallbackType.METHOD_ON_COMPLETE:
                     while (iterator.hasNext()) {
                         DownloadCallbacks listener = (DownloadCallbacks) iterator.next();
                         listener.onComplete(model, args);
                     }
                     removeTask(model);
                     break;
-                case DownloadCallbacks.METHOD_ON_FAILED:
+                case DownloadCallbacks.CallbackType.METHOD_ON_FAILED:
                     iterator = listeners.iterator();
                     while (iterator.hasNext()) {
                         DownloadCallbacks listener = (DownloadCallbacks) iterator.next();
                         listener.onFailed(model, e);
                     }
+                    removeTask(model);
                     break;
-                case DownloadCallbacks.METHOD_ON_CANCELED:
+                case DownloadCallbacks.CallbackType.METHOD_ON_CANCELED:
                     iterator = listeners.iterator();
                     while (iterator.hasNext()) {
                         DownloadCallbacks listener = (DownloadCallbacks) iterator.next();
                         listener.onCanceled(model);
                     }
                     break;
-                case DownloadCallbacks.METHOD_ON_WAIT:
+                case DownloadCallbacks.CallbackType.METHOD_ON_WAIT:
                     iterator = listeners.iterator();
                     while (iterator.hasNext()) {
                         DownloadCallbacks listener = (DownloadCallbacks) iterator.next();
                         listener.onWait(model);
                     }
                     break;
-                case DownloadCallbacks.METHOD_ON_PROGRESS:
+                case DownloadCallbacks.CallbackType.METHOD_ON_PROGRESS:
                     iterator = listeners.iterator();
                     while (iterator.hasNext()) {
                         DownloadCallbacks listener = (DownloadCallbacks) iterator.next();
