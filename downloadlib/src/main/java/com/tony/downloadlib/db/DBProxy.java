@@ -4,6 +4,7 @@ import com.tony.downloadlib.greendao.DownloadModelDao;
 import com.tony.downloadlib.model.DownloadModel;
 
 import java.io.File;
+import java.util.List;
 
 /**
  * Author: shishaojie
@@ -49,5 +50,9 @@ public class DBProxy {
         if (file.exists() && file.isFile()) {
             file.delete();
         }
+    }
+
+    public static List<DownloadModel> getAllModels() {
+        return modelDao.queryBuilder().build().list();
     }
 }

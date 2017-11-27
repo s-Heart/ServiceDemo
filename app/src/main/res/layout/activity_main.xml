@@ -172,4 +172,10 @@
         android:layout_height="wrap_content"
         android:text="jump Second Act" />
 
+    <Button
+        android:id="@+id/btn_jump_search_activity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="jump searchAct" />
+
 </LinearLayout>

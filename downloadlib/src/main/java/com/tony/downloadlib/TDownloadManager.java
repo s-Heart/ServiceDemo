@@ -8,6 +8,7 @@ import android.content.ServiceConnection;
 import android.os.IBinder;
 import android.util.Log;
 
+import com.tony.downloadlib.db.DBProxy;
 import com.tony.downloadlib.db.TDBManager;
 import com.tony.downloadlib.downloadproxy.ServiceBinder;
 import com.tony.downloadlib.interfaces.DownloadCallbacks;
@@ -145,6 +146,15 @@ public class TDownloadManager implements ServiceConnection {
     }
 
     //endregion
+
+    //region DB
+
+    public List<DownloadModel> getAllModels() {
+        return DBProxy.getAllModels();
+    }
+
+    //endregion
+
 
 
 }

@@ -65,6 +65,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Down
         bar3.setMax(100);
 
         findViewById(R.id.btn_jump_activity).setOnClickListener(this);
+        findViewById(R.id.btn_jump_search_activity).setOnClickListener(this);
 
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -134,6 +135,9 @@ public class MainActivity extends Activity implements View.OnClickListener, Down
                 break;
             case R.id.btn_jump_activity:
                 startActivity(new Intent(this, SecondActivity.class));
+                break;
+            case R.id.btn_jump_search_activity:
+                startActivity(new Intent(this, SearchActivity.class));
                 break;
         }
     }
