@@ -115,7 +115,9 @@ public class ServiceBinder extends Binder implements DownloadActions {
     //region DownloadCallbacks
 
     public void registerCallbackListener(DownloadCallbacks uiCallback) {
-        uiListeners.add(uiCallback);
+        if (!uiListeners.contains(uiCallback)) {
+            uiListeners.add(uiCallback);
+        }
     }
 
     public void unRegisterCallbackListener(DownloadCallbacks uiCallback) {
