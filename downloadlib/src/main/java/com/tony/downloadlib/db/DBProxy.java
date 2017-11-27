@@ -11,10 +11,11 @@ import java.io.File;
  * Description:
  */
 public class DBProxy {
+    private static DownloadModelDao modelDao = TDBManager.getInstance().getDaoSession().getDownloadModelDao();
+
     public static void updateModelDownloadPath(DownloadModel model, String absPath, String fileName) {
         model.setDownloadPath(absPath);
         model.setFileName(fileName);
-        DownloadModelDao modelDao = TDBManager.getInstance().getDaoSession().getDownloadModelDao();
         DownloadModel modelResult = modelDao.queryBuilder().where(DownloadModelDao.Properties.Url.eq(model.getUrl())).build().unique();
         modelResult.setDownloadPath(absPath);
         modelResult.setFileName(fileName);
@@ -23,7 +24,6 @@ public class DBProxy {
 
     public static void updateModelTotalSize(DownloadModel model, long contentLength) {
         model.setTotalSize(contentLength);
-        DownloadModelDao modelDao = TDBManager.getInstance().getDaoSession().getDownloadModelDao();
         DownloadModel modelResult = modelDao.queryBuilder().where(DownloadModelDao.Properties.Url.eq(model.getUrl())).build().unique();
         modelResult.setTotalSize(contentLength);
         modelDao.insertOrReplace(modelResult);
@@ -31,14 +31,12 @@ public class DBProxy {
 
     public static void updateModelDownloadSize(DownloadModel model, long downloadSize) {
         model.setDownloadSize(downloadSize);
-        DownloadModelDao modelDao = TDBManager.getInstance().getDaoSession().getDownloadModelDao();
         DownloadModel modelResult = modelDao.queryBuilder().where(DownloadModelDao.Properties.Url.eq(model.getUrl())).build().unique();
         modelResult.setDownloadSize(downloadSize);
         modelDao.insertOrReplace(modelResult);
     }
 
     public static void deleteModel(DownloadModel model) {
-        DownloadModelDao modelDao = TDBManager.getInstance().getDaoSession().getDownloadModelDao();
         DownloadModel modelResult = modelDao.queryBuilder().where(DownloadModelDao.Properties.Url.eq(model.getUrl())).build().unique();
         if (modelResult != null && modelResult.getDownloadPath() != null) {
             deleteFile(modelResult.getDownloadPath());

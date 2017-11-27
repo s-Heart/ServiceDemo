@@ -28,10 +28,10 @@ public abstract class BaseTask implements Runnable {
 
     /**
      * @param callbackType {@link DownloadCallbacks.CallbackType}
-     * @param listeners
-     * @param model
-     * @param e
-     * @param args
+     * @param listeners {@link com.tony.downloadlib.downloadproxy.ServiceBinder}
+     * @param model {@link DownloadImpl}
+     * @param e {@link DownloadImpl}
+     * @param args {@link DownloadImpl}
      */
     void notifyUIFromWorkThread(int callbackType, Vector listeners, @NotNull DownloadModel model, Exception e, String args) {
         // 线程切换

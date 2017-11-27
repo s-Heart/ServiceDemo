@@ -19,8 +19,8 @@ import java.util.List;
 
 
 public class MainActivity extends Activity implements View.OnClickListener, DownloadCallbacks {
-    //    String file1 = "http://appstore.koolearn.com/files/apps/Koolearn_v3.1.5.apk";
-    String file1 = "http://preview.zhiupimg.cn/group1/M00/00/68/rBAUC1oL8xuATB1CAAgs0LUjDVU169.pdf";
+    String file1 = "http://appstore.koolearn.com/files/apps/Koolearn_v3.1.5.apk";
+    //    String file1 = "http://preview.zhiupimg.cn/group1/M00/00/68/rBAUC1oL8xuATB1CAAgs0LUjDVU169.pdf";
     String file2 = "http://appstore.koolearn.com/files/apps/Koolearn_v2.4.10.exe";
     String file3 = "http://appstore.koolearn.com/files/apps/Koolearn_v0.8.9.dmg";
     DownloadModel model1 = new DownloadModel.Builder().url(file1).build();
