@@ -14,7 +14,11 @@ import com.tony.downloadlib.downloadproxy.ServiceBinder;
 import com.tony.downloadlib.interfaces.DownloadCallbacks;
 import com.tony.downloadlib.model.DownloadModel;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
+
+import okio.Okio;
 
 /**
  * Created by tony on 2017/11/18.
@@ -61,6 +65,7 @@ public class TDownloadManager implements ServiceConnection {
     public Context getContext() {
         return context;
     }
+
     //region download proxy
 
     @Override
@@ -155,6 +160,18 @@ public class TDownloadManager implements ServiceConnection {
 
     //endregion
 
+    //region Okio
+
+    public void doCopy() {
+        try {
+            long size = Okio.buffer(Okio.sink(new File("/output.txt"))).writeAll(Okio.source(new File("/input.txt")));
+            Log.d("=T=TDownloadManager", "doCopy: " + size);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //endregion
 
 
 }

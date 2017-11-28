@@ -95,7 +95,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Down
                 TDownloadManager.getInstance().deleteDownload(model1);
                 break;
             case R.id.btn_start_download_2:
-                model2 = new DownloadModel.Builder().url(file1).build();
+                model2 = new DownloadModel.Builder().url(file2).build();
                 TDownloadManager.getInstance().startDownload(model2);
                 break;
             case R.id.btn_stop_download_2:
@@ -105,7 +105,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Down
                 TDownloadManager.getInstance().deleteDownload(model2);
                 break;
             case R.id.btn_start_download_3:
-                model3 = new DownloadModel.Builder().url(file1).build();
+                model3 = new DownloadModel.Builder().url(file3).build();
                 TDownloadManager.getInstance().startDownload(model3);
                 break;
             case R.id.btn_stop_download_3:
