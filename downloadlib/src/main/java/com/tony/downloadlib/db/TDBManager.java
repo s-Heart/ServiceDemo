@@ -2,6 +2,7 @@ package com.tony.downloadlib.db;
 
 import android.content.Context;
 
+import com.tony.downloadlib.db.upgrade.DBOpenHelper;
 import com.tony.downloadlib.greendao.DaoMaster;
 import com.tony.downloadlib.greendao.DaoSession;
 
@@ -30,9 +31,14 @@ public class TDBManager {
 
 
     public void init(Context context) {
-        DaoMaster.DevOpenHelper devOpenHelper = new DaoMaster.DevOpenHelper(context, "tdownload.db", null);
-        DaoMaster mDaoMaster = new DaoMaster(devOpenHelper.getWritableDb());
+//        DaoMaster.DevOpenHelper devOpenHelper = new DaoMaster.DevOpenHelper(context, "tdownload.db", null);
+//        DaoMaster mDaoMaster = new DaoMaster(devOpenHelper.getWritableDb());
+//        mDaoSession = mDaoMaster.newSession();
+
+        DBOpenHelper dbOpenHelper = new DBOpenHelper(context, "tdownload.db", null);
+        DaoMaster mDaoMaster = new DaoMaster(dbOpenHelper.getWritableDb());
         mDaoSession = mDaoMaster.newSession();
+
     }
 
 

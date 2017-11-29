@@ -142,6 +142,8 @@ public class MainActivity extends Activity implements View.OnClickListener, Down
         }
     }
 
+    //region download callbacks
+
     @Override
     public void onComplete(DownloadModel model, String... args) {
         if (model.getUrl().contains(".apk") || model.getUrl().contains(".pdf")) {
@@ -213,4 +215,6 @@ public class MainActivity extends Activity implements View.OnClickListener, Down
             mState3.setText("state:" + "onProgress...");
         }
     }
+
+    //endregion
 }
